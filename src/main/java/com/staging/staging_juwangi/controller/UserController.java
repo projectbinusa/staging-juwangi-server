@@ -1,11 +1,18 @@
 package com.staging.staging_juwangi.controller;
 
 
+import com.staging.staging_juwangi.dto.UserProfileDTO;
 import com.staging.staging_juwangi.exception.CommonResponse;
 import com.staging.staging_juwangi.exception.ResponseHelper;
+import com.staging.staging_juwangi.model.LoginRequest;
 import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.security.JwtUtils;
+import com.staging.staging_juwangi.service.UserDetail;
 import com.staging.staging_juwangi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +24,34 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService akunService;
+    private JwtUtils jwtUtils;
+
+    public void UserProfil(JwtUtils jwtUtils, UserService userService){
+        this.jwtUtils = jwtUtils;
+        this.akunService = userService;
+    }
+
+    @PostMapping("/login")
+    public CommonResponse<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        return ResponseHelper.ok( akunService.login(loginRequest));
+    }
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfil(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetail) {
+
+            Long userId = ((UserDetail) principal).getId();
+            User user = akunService.get(userId);
+
+            if (user != null){
+                return ResponseEntity.ok(new UserProfileDTO(user));
+            }
+        }
+        return ResponseEntity.status(404).body("User not found");
+    }
 
 
-//    @PostMapping("/login")
-//    public CommonResponse<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-//        return ResponseHelper.ok( akunService.login(loginRequest));
-//    }
     @PostMapping("/register")
     public CommonResponse<User> register(@RequestBody User akun){
         return ResponseHelper.ok( akunService.add(akun));

@@ -1,11 +1,15 @@
 package com.staging.staging_juwangi.service;
 
 import com.staging.staging_juwangi.exception.NotFoundException;
+import com.staging.staging_juwangi.model.LoginRequest;
 import com.staging.staging_juwangi.model.User;
 import com.staging.staging_juwangi.repository.UserRepository;
 import com.staging.staging_juwangi.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +20,7 @@ import java.util.Map;
 @Service
 public class UserService {
     @Autowired
-    UserRepository akunRepository;
+    private UserRepository akunRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -27,8 +31,26 @@ public class UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    public UserService(UserRepository akunRepository) {
+        this.akunRepository = akunRepository;
+    }
 
-//
+
+    public Map<Object, Object> login(LoginRequest loginRequest) {
+        User user = akunRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Username not found"));
+        if (encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateToken(authentication);
+            akunRepository.save(user);
+            Map<Object, Object> response = new HashMap<>();
+            response.put("data", user);
+            response.put("token", jwt);
+            return response;
+        }
+        throw new NotFoundException("Password not found");
+    }
 
     public User add(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
@@ -48,6 +70,7 @@ public class UserService {
     public User edit(Long id, User user) {
         User update = akunRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
         update.setPassword(user.getPassword());
+        update.setEmail(user.getEmail());
         update.setUsername(user.getUsername());
         return akunRepository.save(update);
     }
@@ -61,4 +84,13 @@ public class UserService {
             return null;
         }
     }
+
+
+
+
+//    public User findByUsername(String username) {
+//        return akunRepository.findByUsername(username)
+//                .orElseGet(()-> akunRepository.findByEmail(username).orElse(null));
+//
+//    }
 }
