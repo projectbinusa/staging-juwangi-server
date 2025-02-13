@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class UserService {
     @Autowired
-    UserRepository akunRepository;
+    private UserRepository akunRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -30,6 +30,10 @@ public class UserService {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    public UserService(UserRepository akunRepository) {
+        this.akunRepository = akunRepository;
+    }
 
 
     public Map<Object, Object> login(LoginRequest loginRequest) {
@@ -81,7 +85,12 @@ public class UserService {
         }
     }
 
-    public User findByUsername(String username) {
-        return akunRepository.findByUsername(username).orElse(null);
-    }
+
+
+
+//    public User findByUsername(String username) {
+//        return akunRepository.findByUsername(username)
+//                .orElseGet(()-> akunRepository.findByEmail(username).orElse(null));
+//
+//    }
 }

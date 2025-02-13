@@ -1,11 +1,13 @@
 package com.staging.staging_juwangi.controller;
 
 
+import com.staging.staging_juwangi.dto.UserProfileDTO;
 import com.staging.staging_juwangi.exception.CommonResponse;
 import com.staging.staging_juwangi.exception.ResponseHelper;
 import com.staging.staging_juwangi.model.LoginRequest;
 import com.staging.staging_juwangi.model.User;
 import com.staging.staging_juwangi.security.JwtUtils;
+import com.staging.staging_juwangi.service.UserDetail;
 import com.staging.staging_juwangi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +38,19 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<?> getUserProfil(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails)principal).getUsername();
-            User user = akunService.findByUsername(username);
+
+        if (principal instanceof UserDetail) {
+
+            Long userId = ((UserDetail) principal).getId();
+            User user = akunService.get(userId);
 
             if (user != null){
-                return ResponseEntity.ok(user);
+                return ResponseEntity.ok(new UserProfileDTO(user));
             }
         }
-        return ResponseEntity.status(404).body("user not found");
+        return ResponseEntity.status(404).body("User not found");
     }
+
 
     @PostMapping("/register")
     public CommonResponse<User> register(@RequestBody User akun){
