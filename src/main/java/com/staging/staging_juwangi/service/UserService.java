@@ -69,9 +69,11 @@ public class UserService {
 
     public User edit(Long id, User user) {
         User update = akunRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
-        update.setPassword(user.getPassword());
         update.setEmail(user.getEmail());
         update.setUsername(user.getUsername());
+        if (user.getPassword() != null && !user.getPassword().isEmpty()){
+            update.setPassword(encoder.encode(user.getPassword()));
+        }
         return akunRepository.save(update);
     }
     public Map<String, Boolean> delete(Long id) {
@@ -84,8 +86,6 @@ public class UserService {
             return null;
         }
     }
-
-
 
 
 //    public User findByUsername(String username) {
