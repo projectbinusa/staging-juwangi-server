@@ -1,7 +1,7 @@
 package com.staging.staging_juwangi.controller;
 
-import com.staging.staging_juwangi.model.Produk;
-import com.staging.staging_juwangi.service.ProdukService;
+import com.staging.staging_juwangi.model.Products;
+import com.staging.staging_juwangi.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,26 +9,26 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/produk")
+@RequestMapping("api/products")
 @CrossOrigin(origins = "*")
-public class ProdukController {
+public class ProductsController {
     @Autowired
-    private ProdukService produkService;
+    private ProductsService productsService;
 
     @PostMapping
-    public Produk add(@RequestBody Produk add) {
+    public Products add(@RequestBody Products add) {
         System.out.println("Data yang diterima: " + add);
-        return produkService.add(add);
+        return productsService.add(add);
     }
 
     @GetMapping("/{id}")
-    public Produk getById(@PathVariable("id") Long id) {
-        return produkService.getById( id);
+    public Products getById(@PathVariable("id") Long id) {
+        return productsService.getById( id);
     }
 
     @GetMapping
-    public List<Produk> getAllBarang() {
-        return produkService.getAllBarang();
+    public List<Products> getAllBarang() {
+        return productsService.getAllBarang();
     }
 
 //    @GetMapping("/kategori")
@@ -68,14 +68,14 @@ public class ProdukController {
 //    }
 
     @PutMapping("/{id}")
-    public Produk edit(@PathVariable("id") Long id, @RequestBody Produk produk) {
-        return produkService.edit(id, produk);
+    public Products edit(@PathVariable("id") Long id, @RequestBody Products produk) {
+        return productsService.edit(id, produk);
     }
 
 
     @DeleteMapping("/api/barang/{id}")
     public Map<String, Boolean> delete(@PathVariable("id") Long id) {
-        return produkService.delete(id);
+        return productsService.delete(id);
     }
 
 }

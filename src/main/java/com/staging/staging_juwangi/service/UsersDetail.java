@@ -1,14 +1,14 @@
 package com.staging.staging_juwangi.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.model.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Objects;
 
-public class UserDetail implements UserDetails {
+public class UsersDetail implements UserDetails {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String username;
@@ -16,14 +16,14 @@ public class UserDetail implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserDetail(Long id, String email, String password) {
+    public UsersDetail(Long id, String email, String password) {
         this.id = id;
         this.username = email;
         this.password = password;
     }
 
-    public static UserDetail buildUser(User admin) {
-        return new UserDetail(
+    public static UsersDetail buildUser(Users admin) {
+        return new UsersDetail(
                 admin.getId(),
                 admin.getEmail(),
                 admin.getPassword());
@@ -75,7 +75,7 @@ public class UserDetail implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        UserDetail admin = (UserDetail) o;
+        UsersDetail admin = (UsersDetail) o;
         return Objects.equals(id, admin.id);
     }
 }

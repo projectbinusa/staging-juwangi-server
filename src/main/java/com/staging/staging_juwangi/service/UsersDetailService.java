@@ -1,7 +1,7 @@
 package com.staging.staging_juwangi.service;
 
 import com.staging.staging_juwangi.exception.NotFoundException;
-import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.model.Users;
 import com.staging.staging_juwangi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class UserDetailService implements UserDetailsService {
+public class UsersDetailService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
@@ -19,8 +19,8 @@ public class UserDetailService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) {
         if (userRepository.existsByEmail(username)){
-            User user = userRepository.findByEmail(username).orElseThrow(() -> new NotFoundException("Id Not Found"));
-            return UserDetail.buildUser(user);
+            Users user = userRepository.findByEmail(username).orElseThrow(() -> new NotFoundException("Id Not Found"));
+            return UsersDetail.buildUser(user);
         }
         throw new NotFoundException("User Not Found with username: " + username);
     }

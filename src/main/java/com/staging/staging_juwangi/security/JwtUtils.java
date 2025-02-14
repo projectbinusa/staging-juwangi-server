@@ -1,8 +1,8 @@
 package com.staging.staging_juwangi.security;
 
-import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.model.Users;
 import com.staging.staging_juwangi.repository.UserRepository;
-import com.staging.staging_juwangi.service.UserDetail;
+import com.staging.staging_juwangi.service.UsersDetail;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,8 @@ public class JwtUtils {
     UserRepository userRepository;
 
     public String generateToken(Authentication authentication) {
-        UserDetail adminPrincipal = (UserDetail) authentication.getPrincipal();
-        User user = userRepository.findByEmail(adminPrincipal.getUsername()).get();
+        UsersDetail adminPrincipal = (UsersDetail) authentication.getPrincipal();
+        Users user = userRepository.findByEmail(adminPrincipal.getUsername()).get();
         return Jwts.builder()
                 .setSubject(adminPrincipal.getUsername())
                 .claim("id" , adminPrincipal.getId())

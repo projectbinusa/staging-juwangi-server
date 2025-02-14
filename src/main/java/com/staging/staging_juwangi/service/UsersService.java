@@ -2,7 +2,7 @@ package com.staging.staging_juwangi.service;
 
 import com.staging.staging_juwangi.exception.NotFoundException;
 import com.staging.staging_juwangi.model.LoginRequest;
-import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.model.Users;
 import com.staging.staging_juwangi.repository.UserRepository;
 import com.staging.staging_juwangi.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserService {
+public class UsersService {
     @Autowired
     private UserRepository akunRepository;
 
@@ -31,13 +31,13 @@ public class UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public UserService(UserRepository akunRepository) {
+    public UsersService(UserRepository akunRepository) {
         this.akunRepository = akunRepository;
     }
 
 
     public Map<Object, Object> login(LoginRequest loginRequest) {
-        User user = akunRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Username not found"));
+        Users user = akunRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Username not found"));
         if (encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -52,23 +52,23 @@ public class UserService {
         throw new NotFoundException("Password not found");
     }
 
-    public User add(User user) {
+    public Users add(Users user) {
         user.setPassword(encoder.encode(user.getPassword()));
         return akunRepository.save(user);
     }
 
 
 
-    public User get(Long id) {
+    public Users get(Long id) {
         return akunRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
     }
 
-    public List<User> getAll() {
+    public List<Users> getAll() {
         return akunRepository.findAll();
     }
 
-    public User edit(Long id, User user) {
-        User update = akunRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
+    public Users edit(Long id, Users user) {
+        Users update = akunRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
         update.setEmail(user.getEmail());
         update.setUsername(user.getUsername());
         if (user.getPassword() != null && !user.getPassword().isEmpty()){

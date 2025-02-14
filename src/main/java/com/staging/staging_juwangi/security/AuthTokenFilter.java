@@ -1,6 +1,6 @@
 package com.staging.staging_juwangi.security;
 
-import com.staging.staging_juwangi.service.UserDetailService;
+import com.staging.staging_juwangi.service.UsersDetailService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -25,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailService adminDetailsService;
+    private UsersDetailService adminDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
