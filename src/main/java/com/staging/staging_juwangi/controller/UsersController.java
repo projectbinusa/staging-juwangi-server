@@ -5,10 +5,10 @@ import com.staging.staging_juwangi.dto.UserProfileDTO;
 import com.staging.staging_juwangi.exception.CommonResponse;
 import com.staging.staging_juwangi.exception.ResponseHelper;
 import com.staging.staging_juwangi.model.LoginRequest;
-import com.staging.staging_juwangi.model.User;
+import com.staging.staging_juwangi.model.Users;
 import com.staging.staging_juwangi.security.JwtUtils;
-import com.staging.staging_juwangi.service.UserDetail;
-import com.staging.staging_juwangi.service.UserService;
+import com.staging.staging_juwangi.service.UsersDetail;
+import com.staging.staging_juwangi.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,12 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("api/users")
 @CrossOrigin(origins = "*")
-public class UserController {
+public class UsersController {
     @Autowired
-    private UserService akunService;
+    private UsersService akunService;
     private JwtUtils jwtUtils;
 
-    public void UserProfil(JwtUtils jwtUtils, UserService userService){
+    public void UserProfil(JwtUtils jwtUtils, UsersService userService){
         this.jwtUtils = jwtUtils;
         this.akunService = userService;
     }
@@ -38,10 +38,10 @@ public class UserController {
     public ResponseEntity<?> getUserProfil(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (principal instanceof UserDetail) {
+        if (principal instanceof UsersDetail) {
 
-            Long userId = ((UserDetail) principal).getId();
-            User user = akunService.get(userId);
+            Long userId = ((UsersDetail) principal).getId();
+            Users user = akunService.get(userId);
 
             if (user != null){
                 return ResponseEntity.ok(new UserProfileDTO(user));
@@ -52,20 +52,20 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public CommonResponse<User> register(@RequestBody User akun){
+    public CommonResponse<Users> register(@RequestBody Users akun){
         return ResponseHelper.ok( akunService.add(akun));
     }
 
     @GetMapping("/{id}")
-    public CommonResponse <User> get(@PathVariable("id") Long id){
+    public CommonResponse <Users> get(@PathVariable("id") Long id){
         return ResponseHelper.ok( akunService.get(id));
     }
     @GetMapping
-    public CommonResponse<List<User>> getAll(){
+    public CommonResponse<List<Users>> getAll(){
         return ResponseHelper.ok( akunService.getAll());
     }
     @PutMapping("/{id}")
-    public CommonResponse<User> put(@PathVariable("id") Long id , @RequestBody User akun){
+    public CommonResponse<Users> put(@PathVariable("id") Long id , @RequestBody Users akun){
         return ResponseHelper.ok( akunService.edit(id, akun));
     }
     @DeleteMapping("/{id}")

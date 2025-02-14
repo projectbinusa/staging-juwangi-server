@@ -4,7 +4,7 @@ package com.staging.staging_juwangi.config;
 import com.staging.staging_juwangi.security.AccessDenied;
 import com.staging.staging_juwangi.security.AuthEntryPointJwt;
 import com.staging.staging_juwangi.security.AuthTokenFilter;
-import com.staging.staging_juwangi.service.UserDetailService;
+import com.staging.staging_juwangi.service.UsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserDetailService adminDetailsService;
+    UsersDetailService adminDetailsService;
 
     @Autowired
     private AccessDenied accessDeniedHandler;
