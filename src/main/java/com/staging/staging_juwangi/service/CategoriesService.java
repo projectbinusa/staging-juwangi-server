@@ -21,7 +21,7 @@ public class CategoriesService {
         Categories categories = new Categories();
         categories.setKategori(add.getKategori());
 
-        Categories saved = (Categories) categoriesRepository.save(categories);
+        Categories saved = categoriesRepository.save(categories);
         return saved;
     }
 
@@ -33,9 +33,12 @@ public class CategoriesService {
         return categoriesRepository.findById(id).orElseThrow(() -> new NotFoundException("id not found"));
     }
 
-    public Categories edit(Long id , Categories user){
-        Categories update = categoriesRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
-        update.setKategori(user.getKategori());
+    public Categories edit(Long id , Categories categories){
+        Categories update = categoriesRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Id Not Found"));
+        if (update.getKategori() != null){
+            update.setKategori(update.getKategori());
+        }
         return categoriesRepository.save(update);
     }
 

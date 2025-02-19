@@ -36,7 +36,7 @@ public class CategoriesController {
         return categoriesService.edit(id ,categories);
     }
 
-    @DeleteMapping("/api/barang/{id}")
+    @DeleteMapping("/{id}")
     public Map<String,Boolean> delete(@PathVariable("id")Long id){
         return categoriesService.delete(id);
     }

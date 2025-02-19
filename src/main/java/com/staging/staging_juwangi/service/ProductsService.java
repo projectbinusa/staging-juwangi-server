@@ -15,10 +15,6 @@ public class ProductsService {
     @Autowired
     ProductsRepository productsRepository;
 
-//    public ProductsService(ProductsRepository productsRepository) {
-//        this.productsRepository = productsRepository;
-//
-//    }
     public Products add(Products add) {
         Products products = new Products();
         products.setNama(add.getNama());
@@ -29,17 +25,18 @@ public class ProductsService {
         products.setGambar(add.getGambar());
 
         System.out.println("Sebelum save: " + products);
-        Products saved = (Products) productsRepository.save(products);
+        Products saved = productsRepository.save(products);
         System.out.println("Setelah save: " + saved);
         return saved;
     }
 
     public Products getById(Long id){
-        return productsRepository.findById(id).orElseThrow(() -> new NotFoundException("id Not Found"));
+        return productsRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("id Not Found"));
     }
 
 
-    public List<Products> getAllBarang() {
+    public List<Products> getAllProducts() {
         return productsRepository.findAll();
     }
 
@@ -61,14 +58,14 @@ public class ProductsService {
 //        };
 //    }
 
-    public Products edit(Long id , Products user){
+    public Products edit(Long id , Products products){
         Products update = productsRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
-        update.setNama(user.getNama());
-        update.setStok(user.getStok());
-        update.setDeskripsi(user.getDeskripsi());
-        update.setKategori(user.getKategori());
-        update.setGambar(user.getGambar());
-        update.setHarga(user.getHarga());
+        update.setNama(products.getNama());
+        update.setStok(products.getStok());
+        update.setDeskripsi(products.getDeskripsi());
+        update.setKategori(products.getKategori());
+        update.setGambar(products.getGambar());
+        update.setHarga(products.getHarga());
         return productsRepository.save(update);
     }
 
