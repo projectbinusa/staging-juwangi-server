@@ -3,7 +3,7 @@ package com.staging.staging_juwangi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "produk")
+@Table(name = "products")
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -27,8 +27,8 @@ public class ProductsController {
     }
 
     @GetMapping
-    public List<Products> getAllBarang() {
-        return productsService.getAllBarang();
+    public List<Products> getAllProducts() {
+        return productsService.getAllProducts();
     }
 
 //    @GetMapping("/kategori")
@@ -68,12 +68,12 @@ public class ProductsController {
 //    }
 
     @PutMapping("/{id}")
-    public Products edit(@PathVariable("id") Long id, @RequestBody Products produk) {
-        return productsService.edit(id, produk);
+    public Products edit(@PathVariable("id") Long id, @RequestBody Products products) {
+        return productsService.edit(id, products);
     }
 
 
-    @DeleteMapping("/api/barang/{id}")
+    @DeleteMapping("{id}")
     public Map<String, Boolean> delete(@PathVariable("id") Long id) {
         return productsService.delete(id);
     }
