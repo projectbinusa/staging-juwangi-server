@@ -1,7 +1,6 @@
 package com.staging.staging_juwangi.controller;
 
 
-import com.staging.staging_juwangi.dto.UserProfileDTO;
 import com.staging.staging_juwangi.exception.CommonResponse;
 import com.staging.staging_juwangi.exception.ResponseHelper;
 import com.staging.staging_juwangi.model.LoginRequest;
@@ -11,10 +10,12 @@ import com.staging.staging_juwangi.service.UsersDetail;
 import com.staging.staging_juwangi.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -35,19 +36,16 @@ public class UsersController {
         return ResponseHelper.ok( akunService.login(loginRequest));
     }
     @GetMapping("/profile")
-    public ResponseEntity<?> getUserProfil(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UsersDetail) {
-
-            Long userId = ((UsersDetail) principal).getId();
-            Users user = akunService.get(userId);
-
-            if (user != null){
-                return ResponseEntity.ok(new UserProfileDTO(user));
-            }
+    public ResponseEntity<Map<String, Object>> getUserProfile(@AuthenticationPrincipal UsersDetail userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body(Map.of("message", "User not logged in"));
         }
-        return ResponseEntity.status(404).body("User not found");
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", userDetails.getId());
+        response.put("email", userDetails.getUsername());
+
+        return ResponseEntity.ok(response);
     }
 
 
