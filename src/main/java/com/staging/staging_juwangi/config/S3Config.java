@@ -12,26 +12,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3Config {
 
-    @Value("${s3.accessKey}")
-    private String accessKey;
 
-    @Value("${s3.secretKey}")
-    private String secretKey;
-
-    @Value("${s3.endpoint}")
-    private String endpoint;
-
-    @Value("${s3.region}")
-    private String region;
+    private final String accessKey = "DFJP4U1BQCZAJSKFRKQZ";
+    private final String secretKey = "F68PW26dpsFLAu5C7QtAm1sHnAqfPsxPQm62AhT";
+    private final String endpoint = "https://is3.cloudhost.id/binus";
+    private final String region = "us-east-1";
 
     @Bean
     public AmazonS3 amazonS3() {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
 
         return AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                .withPathStyleAccessEnabled(true)
                 .build();
     }
 }
