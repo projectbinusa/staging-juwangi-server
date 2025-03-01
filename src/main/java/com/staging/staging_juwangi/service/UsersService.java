@@ -11,11 +11,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -35,6 +37,14 @@ public class UsersService {
         this.akunRepository = akunRepository;
     }
 
+    public Optional<Users> getUserProfile(Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.empty();
+        }
+        return akunRepository.findById(id);
+    }
 
     public Map<Object, Object> login(LoginRequest loginRequest) {
         Users user = akunRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Username not found"));

@@ -10,12 +10,14 @@ import com.staging.staging_juwangi.service.UsersDetail;
 import com.staging.staging_juwangi.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -35,17 +37,16 @@ public class UsersController {
     public CommonResponse<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         return ResponseHelper.ok( akunService.login(loginRequest));
     }
-    @GetMapping("/profile")
-    public ResponseEntity<Map<String, Object>> getUserProfile(@AuthenticationPrincipal UsersDetail userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(401).body(Map.of("message", "User not logged in"));
+    @GetMapping("/profile/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getUserProfile(@PathVariable Long id) {
+        Optional<Users> users = akunService.getUserProfile(id);
+
+        if (users.isPresent()) {
+            return ResponseEntity.ok(users.get());
+        }else {
+            return ResponseEntity.status(403).body("Unauthorized or user not found");
         }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", userDetails.getId());
-        response.put("email", userDetails.getUsername());
-
-        return ResponseEntity.ok(response);
     }
 
 
