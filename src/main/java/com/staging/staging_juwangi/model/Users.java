@@ -50,5 +50,9 @@ Users {
         this.password = password;
     }
 
+    public String getRole(){
+        return "USERS";
+    }
+
 
 }

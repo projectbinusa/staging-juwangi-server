@@ -53,4 +53,8 @@ public class Admin {
         this.password = password;
     }
 
+    public String getRole(){
+        return "ADMIN";
+    }
+
 }
