@@ -15,6 +15,7 @@ public class ProductsService {
     @Autowired
     ProductsRepository productsRepository;
 
+
     public Products add(Products add) {
         Products products = new Products();
         products.setNama(add.getNama());
@@ -40,23 +41,6 @@ public class ProductsService {
         return productsRepository.findAll();
     }
 
-//    public List<Produk> getBarangByNama_barang(String nama) {
-//        if (nama == null || nama.isEmpty()) {
-//            return produkRepository.findAll();
-//        }
-//        return produkRepository.findByNama_barang(nama);
-//    }
-
-//    public void buyProduk(Long id , int jumlah) throws Throwable {
-//        Produk barang = (Produk) produkRepository.findById(id)
-//                .orElseThrow(() ->new IllegalArgumentException("Barang tidak di temukan"));
-//        if (barang.getStok() < jumlah) {
-//            throw new IllegalArgumentException("Stok Barang tidak mencukupi!");
-//        }
-//        barang.setStok(barang.getStok() - jumlah); {
-//            produkRepository.save(barang);
-//        };
-//    }
 
     public Products edit(Long id , Products products){
         Products update = productsRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));

@@ -1,5 +1,6 @@
 package com.staging.staging_juwangi.model;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -16,16 +17,16 @@ public class Products {
     private String kategori;
 
     @Column(name = "harga", nullable = false)
-    private String harga;
+    private Float harga;
 
-    @Column(name = "stok" ,nullable = false)
-    private Long Stok;
+    @Column(name = "stok" )
+    private Long stok;
 
     @Column(name = "deskripsi")
-    private String Deskripsi;
+    private String deskripsi;
 
     @Column(name = "gambar")
-    private String Gambar;
+    private String gambar;
 
     public Long getId() {
         return id;
@@ -48,32 +49,32 @@ public class Products {
         this.kategori = kategori;
     }
 
-    public String getHarga() {
+    public Float getHarga() {
         return harga;
     }
-    public void setHarga(String harga) {
+    public void setHarga(Float harga) {
         this.harga = harga;
     }
 
     public Long getStok() {
-        return Stok;
+        return stok;
     }
     public void setStok(Long stok) {
-        this.Stok = stok;
+        this.stok = stok;
     }
 
     public String getDeskripsi() {
-        return Deskripsi;
+        return deskripsi;
     }
     public void setDeskripsi(String deskripsi) {
-       this.Deskripsi = deskripsi;
+       this.deskripsi = deskripsi;
     }
 
     public String getGambar() {
-        return Gambar;
+        return gambar;
     }
     public void setGambar(String gambar) {
-        this.Gambar = gambar;
+        this.gambar = gambar;
     }
 }
 
