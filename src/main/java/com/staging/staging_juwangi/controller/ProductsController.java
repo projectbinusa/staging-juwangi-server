@@ -14,7 +14,7 @@ public class ProductsController {
     @Autowired
     private ProductsService productsService;
 
-    @PostMapping
+    @PostMapping("/add")
     public Products add(@RequestBody Products add){
         System.out.println("Data yang di terima" + add);
         return productsService.add(add);
