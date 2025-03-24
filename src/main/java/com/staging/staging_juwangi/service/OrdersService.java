@@ -19,8 +19,9 @@ public class OrdersService {
     public Orders add (Orders add){
         Orders orders = new Orders();
         orders.setNama(add.getNama());
-        orders.setProducts(add.getProducts());
-        orders.setJumlah(add.getJumlah());
+        orders.setEmail(add.getEmail());
+        orders.setPhone(add.getPhone());
+        orders.setTanggalLahir(add.getTanggalLahir());
         orders.setAlamat(add.getAlamat());
 
         System.out.println("Sebelum save: " + orders);
@@ -40,7 +41,9 @@ public class OrdersService {
     public Orders edit (Long id, Orders orders ){
         Orders update = ordersRepository.findById(id).orElseThrow(() ->new NotFoundException("Id not found"));
         update.setNama(orders.getNama());
-        update.setJumlah(orders.getJumlah());
+        update.setEmail(orders.getEmail());
+        update.setPhone(orders.getPhone());
+        update.setTanggalLahir(orders.getTanggalLahir());
         update.setAlamat(orders.getAlamat());
         return ordersRepository.save(update);
     }

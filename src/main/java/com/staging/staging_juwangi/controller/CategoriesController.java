@@ -16,7 +16,7 @@ public class CategoriesController {
     @Autowired
     private CategoriesService categoriesService;
 
-    @PostMapping
+    @PostMapping("/add")
     public Categories add (@RequestBody Categories add){
         return categoriesService.add(add);
     }
@@ -31,12 +31,12 @@ public class CategoriesController {
         return categoriesService.getById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public Categories edit(@PathVariable("id")Long id,@RequestParam Categories categories){
         return categoriesService.edit(id ,categories);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public Map<String,Boolean> delete(@PathVariable("id")Long id){
         return categoriesService.delete(id);
     }

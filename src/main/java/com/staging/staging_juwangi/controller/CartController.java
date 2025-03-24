@@ -21,12 +21,12 @@ public class CartController {
         return cartService.getAll();
     }
 
-    @PostMapping("/{barangId}")
-    public Cart addCart(@PathVariable Long barangId) {
-        return cartService.addCart(barangId);
+    @PostMapping("/add/{productsId}")
+    public Cart addCart(@PathVariable Long productsId) {
+        return cartService.addCart(productsId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public Map<String, Boolean> delete(@PathVariable("id") Long id) {
         return cartService.delete(id);
     }

@@ -22,6 +22,7 @@ public class ProductsService {
         products.setKategori(add.getKategori());
         products.setHarga(add.getHarga());
         products.setStok(add.getStok());
+        products.setJumlah(add.getJumlah());
         products.setDeskripsi(add.getDeskripsi());
         products.setGambar(add.getGambar());
 
@@ -46,6 +47,7 @@ public class ProductsService {
         Products update = productsRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
         update.setNama(products.getNama());
         update.setStok(products.getStok());
+        update.setJumlah(products.getJumlah());
         update.setDeskripsi(products.getDeskripsi());
         update.setKategori(products.getKategori());
         update.setGambar(products.getGambar());

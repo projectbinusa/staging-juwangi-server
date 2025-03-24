@@ -1,6 +1,8 @@
 package com.staging.staging_juwangi.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "orders")
@@ -13,11 +15,15 @@ public class Orders {
     @Column(name = "nama")
     private String nama;
 
-    @Column(name = "products")
-    private String products;
+    @Column(name = "email")
+    private String email;
 
-    @Column(name = "jumlah")
-    private Long jumlah;
+    @Column(name = "tanggal_lahir")
+    private Date tanggalLahir;
+
+
+    @Column(name = "phone")
+    private Long phone;
 
     @Column(name = "alamat")
     private String alamat;
@@ -38,20 +44,28 @@ public class Orders {
         this.nama = nama;
     }
 
-    public String getProducts() {
-        return products;
+    public String getEmail() {
+        return email;
     }
 
-    public void setProducts(String products) {
-        this.products = products;
+    public void setEmail(String enail) {
+        this.email = enail;
     }
 
-    public Long getJumlah() {
-        return jumlah;
+    public Long getPhone() {
+        return phone;
     }
 
-    public void setJumlah(Long jumlah) {
-        this.jumlah = jumlah;
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
+
+    public Date getTanggalLahir() {
+        return tanggalLahir;
+    }
+
+    public void setTanggalLahir(Date tanggalLahir) {
+        this.tanggalLahir = tanggalLahir;
     }
 
     public String getAlamat() {

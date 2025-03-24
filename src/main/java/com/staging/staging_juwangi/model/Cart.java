@@ -28,6 +28,8 @@ public class Cart {
     @Column(name = "gambar")
     private String gambar;
 
+    private int kuantitas;
+
     public Long getId() {
         return id;
     }
@@ -75,5 +77,13 @@ public class Cart {
     }
     public void setGambar(String gambar) {
         this.gambar = gambar;
+    }
+
+    public int getKuantitas() {
+        return kuantitas;
+    }
+
+    public void setKuantitas(int kuantitas) {
+        this.kuantitas = kuantitas;
     }
 }
