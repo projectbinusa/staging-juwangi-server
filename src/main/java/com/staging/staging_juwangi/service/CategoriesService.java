@@ -34,11 +34,8 @@ public class CategoriesService {
     }
 
     public Categories edit(Long id , Categories categories){
-        Categories update = categoriesRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Id Not Found"));
-        if (update.getKategori() != null){
-            update.setKategori(update.getKategori());
-        }
+        Categories update = categoriesRepository.findById(id).orElseThrow(() -> new NotFoundException("Id Not Found"));
+        update.setKategori(categories.getKategori());
         return categoriesRepository.save(update);
     }
 

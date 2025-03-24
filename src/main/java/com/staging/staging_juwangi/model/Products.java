@@ -22,6 +22,9 @@ public class Products {
     @Column(name = "stok" )
     private Long stok;
 
+    @Column(name = "jumlah")
+    private Long jumlah;
+
     @Column(name = "deskripsi")
     private String deskripsi;
 
@@ -61,6 +64,14 @@ public class Products {
     }
     public void setStok(Long stok) {
         this.stok = stok;
+    }
+
+    public Long getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(Long jumlah) {
+        this.jumlah = jumlah;
     }
 
     public String getDeskripsi() {
