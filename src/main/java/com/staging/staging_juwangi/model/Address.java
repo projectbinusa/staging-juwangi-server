@@ -1,17 +1,20 @@
 package com.staging.staging_juwangi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "orders")
-public class Orders {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long AddressId;
 
+    private String address;
     @Column(name = "nama")
     private String nama;
 
@@ -28,12 +31,24 @@ public class Orders {
     @Column(name = "alamat")
     private String alamat;
 
-    public Long getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "invoice_id", nullable = false)
+    @JsonBackReference
+    @JsonIgnore
+    private Invoice invoice;
+
+    public Address() {}
+
+    public Address(String address, Invoice invoice) {
+        this.address = address;
+        this.invoice = invoice;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getAddressId() {
+        return AddressId;
+    }
+    public void setAddressId(Long addressId) {
+        AddressId = addressId;
     }
 
     public String getNama() {
@@ -74,5 +89,21 @@ public class Orders {
 
     public void setAlamat(String alamat) {
         this.alamat = alamat;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

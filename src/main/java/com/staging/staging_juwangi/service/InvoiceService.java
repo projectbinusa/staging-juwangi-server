@@ -1,53 +1,97 @@
 package com.staging.staging_juwangi.service;
 
+import com.staging.staging_juwangi.dto.Item;
+import com.staging.staging_juwangi.model.Address;
 import com.staging.staging_juwangi.model.Invoice;
-import com.staging.staging_juwangi.model.Orders;
 import com.staging.staging_juwangi.repository.InvoiceRepository;
-import com.staging.staging_juwangi.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 public class InvoiceService {
-
     @Autowired
     private InvoiceRepository invoiceRepository;
 
-//    @Autowired
-//    private OrdersRepository ordersRepository;
+    public Invoice createInvoice(Invoice create) {
+        Invoice add = new Invoice();
+        add.setInvoiceId(create.getInvoiceId());
+        add.setStatus(create.getStatus());
+        add.setDate(create.getDate());
+        add.setDueDate(create.getDueDate());
 
-    public List<Invoice> getAll() {
+        List<Address> fromlist = create.getFromAddress().stream()
+                .map(addr -> new Address(addr.getAddress(), add))
+                .collect(Collectors.toList());
+        add.setFromAddress(fromlist);
+
+        List<Address> toList = create.getToAddress().stream()
+                .map(addr -> new Address(addr.getAddress(), add))
+                .collect(Collectors.toList());
+        add.setToAddress(toList);
+
+        List<Item> itemList =  create.getItems().stream().map(i -> {
+                Item item = new Item();
+                item.setProduct(i.getProduct());
+                item.setDeskripsi(i.getDeskripsi());
+                item.setKuantitas(i.getKuantitas());
+                item.setHarga(i.getHarga());
+                item.setInvoice(add);
+                return item;
+                }).collect(Collectors.toList());
+
+            add.setItems(itemList);
+            Invoice saved = invoiceRepository.save(add);
+
+            return saved;
+
+
+
+
+
+//        try{
+//            Invoice invoice = new Invoice();
+//            invoice.setInvoiceId(create.getInvoiceId());
+//            invoice.setStatus(create.getStatus());
+//            invoice.setFromAddress(create.getFromAddress());
+//            invoice.setToAddress(create.getToAddress());
+//            invoice.setDate(create.getDate());
+//            invoice.setDueDate(create.getDueDate());
+//
+//            List<Item> itemList =  create.getItems().stream().map(i -> {
+//                Item item = new Item();
+//                item.setProduct(i.getProduct());
+//                item.setDeskripsi(i.getDeskripsi());
+//                item.setKuantitas(i.getKuantitas());
+//                item.setHarga(i.getHarga());
+//                item.setInvoice(invoice);
+//                return item;
+//                }).collect(Collectors.toList());
+//
+//            invoice.setItems(itemList);
+//            Invoice saved = invoiceRepository.save(invoice);
+//
+//            return saved;
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Gagal membuat Invoice" + e.getMessage());
+//        }
+
+    }
+
+    public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
-    public Invoice create (Invoice create ) {
-        Invoice invoice = new Invoice();
-        invoice.setInvoiceId(create.getInvoiceId());
-        invoice.setStatus(create.getStatus());
-        invoice.setFromAddress(create.getFromAddress());
-        invoice.setToAddress(create.getToAddress());
-        invoice.setDate(create.getDate());
-        invoice.setDueDate(create.getDueDate());
-        invoice.setProduct(create.getProduct());
-        invoice.setDeskripsi(create.getDeskripsi());
-        invoice.setKuantitas(create.getKuantitas());
-        invoice.setHarga(create.getHarga());
-        invoice.setTotal(create.getTotal());
+    public Optional<Invoice> getInvoiceById(Long id) {
+        return invoiceRepository.findById(id);
+    }
 
-//        Optional < Orders> ordersOptional = ordersRepository.findById(create.getId());
-//        if (ordersOptional.isPresent()) {
-//            Orders orders = ordersOptional.get();
-//
-//            invoice.setFromAddress(orders.getNama());
-//            invoice.setToAddress(orders.getNama());
-//        } else {
-//            throw new RuntimeException("orders dengan id " + create.getId() + "tidak di temukan ");
-//        }
-
-        Invoice saved = invoiceRepository.save(invoice);
-        return saved;
+    public void deleteInvoice(Long id) {
+        invoiceRepository.deleteById(id);
     }
 }

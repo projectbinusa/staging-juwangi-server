@@ -1,6 +1,6 @@
 package com.staging.staging_juwangi.service;
 
-import com.staging.staging_juwangi.repository.OrdersRepository;
+import com.staging.staging_juwangi.repository.AddressRepository;
 import com.staging.staging_juwangi.repository.ProductsRepository;
 import com.staging.staging_juwangi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ public class StatsService {
     private UserRepository userRepository;
 
     @Autowired
-    private OrdersRepository ordersRepository;
+    private AddressRepository ordersRepository;
 
     @Autowired
     private ProductsRepository productsRepository;
