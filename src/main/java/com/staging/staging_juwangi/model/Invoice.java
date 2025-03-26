@@ -1,7 +1,15 @@
 package com.staging.staging_juwangi.model;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.staging.staging_juwangi.dto.Item;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 @Entity
 @Table(name = "Invoice")
@@ -11,8 +19,8 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Invoice_id")
-    private Long InvoiceId;
+    @Column(name = "invoiceId" , unique = true, nullable = false)
+    private Long invoiceId;
 
     @Column(name = "status")
     private String status;
@@ -23,27 +31,22 @@ public class Invoice {
     @Column(name = "due_date")
     private Date dueDate;
 
+    @OneToMany(mappedBy = "invoice" ,cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Address> fromAddress =new ArrayList<>();
 
-    @Column(name = "from_address")
-    private String fromAddress;
+    @OneToMany(mappedBy = "invoice" ,cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Address> toAddress = new ArrayList<>();
 
-    @Column(name = "to_address")
-    private String toAddress;
+//    @Column(name = "from_address")
+//    private String fromAddress;
+//
+//    @Column(name = "to_address")
+//    private String toAddress;
 
-    @Column(name = "product")
-    private String product;
+    @OneToMany(mappedBy = "invoice" , cascade = CascadeType.ALL ,orphanRemoval = true)
+    @JsonManagedReference
+    private List<Item> items = new ArrayList<>();
 
-    @Column(name = "deskripsi")
-    private String deskripsi;
-
-    @Column(name = "kuantitas")
-    private Long kuantitas;
-
-    @Column(name = "harga")
-    private Float harga;
-
-    @Column(name = "total")
-    private Float total;
 
     public Long getId() {
         return id;
@@ -54,11 +57,11 @@ public class Invoice {
     }
 
     public Long getInvoiceId() {
-        return InvoiceId;
+        return invoiceId;
     }
 
     public void setInvoiceId(Long invoiceId) {
-        InvoiceId = invoiceId;
+        invoiceId = invoiceId;
     }
 
     public String getStatus() {
@@ -81,63 +84,48 @@ public class Invoice {
         return dueDate;
     }
 
-    public void setDueDate(Date duoDate) {
-        this.dueDate = duoDate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public String getFromAddress() {
+//    public String getFromAddress() {
+//        return fromAddress;
+//    }
+//
+//    public void setFromAddress(String fromAddress) {
+//        this.fromAddress = fromAddress;
+//    }
+//
+//    public String getToAddress() {
+//        return toAddress;
+//    }
+//
+//    public void setToAddress(String toAddress) {
+//        this.toAddress = toAddress;
+//    }
+
+    public List<Item> getItems()
+    {return items;}
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+        if (items != null) {
+            items.forEach(item -> item.setInvoice(this));
+        }
+    }
+
+    public List<Address> getFromAddress() {
         return fromAddress;
     }
 
-    public void setFromAddress(String fromAddress) {
+    public void setFromAddress(List<Address> fromAddress) {
         this.fromAddress = fromAddress;
     }
 
-    public String getToAddress() {
+    public List<Address> getToAddress() {
         return toAddress;
     }
-
-    public void setToAddress(String toAddress) {
+    public void setToAddress(List<Address> toAddress) {
         this.toAddress = toAddress;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public String getDeskripsi() {
-        return deskripsi;
-    }
-
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
-    }
-
-    public Long getKuantitas() {
-        return kuantitas;
-    }
-
-    public void setKuantitas(Long kuantitas) {
-        this.kuantitas = kuantitas;
-    }
-
-    public Float getHarga() {
-        return harga;
-    }
-
-    public void setHarga(Float harga) {
-        this.harga = harga;
-    }
-
-    public Float getTotal() {
-        return total;
-    }
-
-    public void setTotal(Float total) {
-        this.total = total;
     }
 }
